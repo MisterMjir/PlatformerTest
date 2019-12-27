@@ -1,12 +1,16 @@
 #include "game.h"
 #include "constants.h"
 #include "camera.h"
+#include "texture_manager.h"
+#include <iostream>
 
 bool Game::running;
 Window* Game::window;
 Renderer* Game::renderer;
 ManagerManager* Game::manager;
-GameInput Game::inputs = {WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, false, false, false};
+GameInput Game::inputs = {false, false, false, false};
+Camera Game::camera = Camera();
+SDL_Texture* Game::texture;
 
 void Game::init(const char* title, int x, int y, int width, int height, bool fullScreen)
 {
@@ -14,6 +18,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
   {
     window = new Window(title, x, y, width, height, fullScreen);
     renderer = new Renderer(window->getWindow());
+    texture = TextureManager::loadTexture(".res/images/spritesheet.png", renderer);
     manager = new ManagerManager(renderer);
     running = true;
   }
@@ -27,6 +32,7 @@ void Game::close()
 {
   delete window;
   delete renderer;
+  SDL_DestroyTexture(texture);
   delete manager;
 
   SDL_Quit();
@@ -41,30 +47,22 @@ void Game::input()
     case SDL_QUIT:
       running = false;
       break;
-    case SDL_WINDOWEVENT:
-      switch (e.window.event)
-      {
-        case SDL_WINDOWEVENT_SIZE_CHANGED:
-          inputs.winW = e.window.data1;
-          inputs.winH = e.window.data2;
-          // std::cout << "Width: " << e.window.data1 << "\tHeight: " << e.window.data2 << "\n";
-          break;
-      }
-      break;
     case SDL_KEYDOWN:
       switch (e.key.keysym.sym)
       {
         case SDLK_LEFT:
           inputs.left = true;
+          camera.move(-16, 0);
           break;
         case SDLK_RIGHT:
           inputs.right = true;
+          camera.move(16, 0);
           break;
         case SDLK_UP:
-          // Camera::changeY(-1);
+          camera.move(0, -16);
           break;
         case SDLK_DOWN:
-          // Camera::changeY(1);
+          camera.move(0, 16);
           break;
       }
       break;
@@ -85,25 +83,7 @@ void Game::input()
           break;
       }
       break;
-    case SDL_MOUSEBUTTONDOWN:
-      switch (e.button.button)
-      {
-        case SDL_BUTTON_LEFT:
-          inputs.mouseButtonLeft = true;
-          break;
-      }
-      break;
-    case SDL_MOUSEBUTTONUP:
-      switch (e.button.button)
-      {
-        case SDL_BUTTON_LEFT:
-          inputs.mouseButtonLeft = false;
-          break;
-      }
-      break;
   }
-  // Update mouse position
-  SDL_GetMouseState(&inputs.mouseX, &inputs.mouseY);
 }
 
 void Game::update()

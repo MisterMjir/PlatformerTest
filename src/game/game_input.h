@@ -2,12 +2,7 @@
 #define GAME_INPUT
 
 struct GameInput {
-  int winW;
-  int winH;
-  int mouseX;
-  int mouseY;
-  bool mouseButtonLeft;
-  bool left, right;
+  bool left, right, up, down;
 };
 
 #endif

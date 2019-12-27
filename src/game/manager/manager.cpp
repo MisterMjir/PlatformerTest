@@ -26,7 +26,7 @@ void Manager::removeObjects()
 {
   for (auto obj : objects)
     delete obj;
-  objects.clear();
+  std::vector<GameObject*>().swap(objects);
 }
 
 GameObject* Manager::getObject(int index)

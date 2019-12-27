@@ -10,13 +10,11 @@
 class GameItem : public GameObject
 {
 public:
-  GameItem(const char* texturesheet, Renderer*);
+  GameItem(Renderer*);
   virtual ~GameItem();
 
   virtual void update() = 0;
   virtual void draw();
-
-  void changeTexture(const char*);
 protected:
   SDL_Texture* texture;
   SDL_Rect srcRect, destRect;

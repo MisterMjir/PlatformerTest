@@ -19,8 +19,6 @@ add_executable(platformer
   src/items/cloud/cloud.cpp
   src/items/tile/tile_manager.cpp
   src/items/tile/tile.cpp
-  src/items/player/player_manager.cpp
-  src/items/player/player.cpp
 
   src/physics/aabb_game_item.cpp
   src/physics/aabb.cpp
@@ -32,9 +30,6 @@ add_executable(platformer
   src/ui/components/component_manager.cpp
   src/ui/components/ui_component.cpp
 
-  src/ui/components/button/button_manager.cpp
-  src/ui/components/button/button.cpp
-
   src/utilities/texture_manager.cpp
 )
 target_include_directories(platformer PUBLIC
@@ -43,7 +38,6 @@ target_include_directories(platformer PUBLIC
   src/game/manager
   src/items/cloud
   src/items/tile
-  src/items/player
   src/physics
   src/ui
   src/ui/components

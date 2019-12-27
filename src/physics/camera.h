@@ -1,17 +1,25 @@
 #ifndef CAMERA
 #define CAMERA
 
+enum CAMERA_DIRECTION {NORTH_WEST, NORTH, NORTH_EAST, WEST, EAST, SOUTH_WEST, SOUTH, SOUTH_EAST, NONE};
+
 class Camera
 {
 public:
-  static int getX() {return x;}
-  static int getY() {return y;}
-  static void changeX(int change) {x += change;}
-  static void changeY(int change) {y += change;}
-private:
   Camera();
-  ~Camera();
-  static int x, y;
+  void move(int, int);
+  void set(int, int);
+  void setX(int);
+  void setY(int);
+  int getX() {return x;}
+  int getY() {return y;}
+  CAMERA_DIRECTION getDirection(); // Only for TileManager to use
+private:
+  int x;
+  int y;
+  int oldX;
+  int oldY;
+  CAMERA_DIRECTION direction;
 };
 
 #endif

@@ -1,12 +1,13 @@
 #include "game_item.h"
 #include "texture_manager.h"
-#include "camera.h"
+#include "game.h"
 #include <iostream>
+#include <chrono>
 
-GameItem::GameItem(const char* texturesheet, Renderer* ren)
+GameItem::GameItem(Renderer* ren)
 {
   renderer = ren;
-  texture = TextureManager::loadTexture(texturesheet, renderer);
+  texture = Game::getTexture();
   // Initalize rects in case not initialized
   srcRect = {0, 0, 0, 0};
   destRect = {0, 0, 0, 0};
@@ -14,17 +15,11 @@ GameItem::GameItem(const char* texturesheet, Renderer* ren)
 
 GameItem::~GameItem()
 {
-  SDL_DestroyTexture(texture);
-}
 
-void GameItem::changeTexture(const char* texturesheet)
-{
-  SDL_DestroyTexture(texture);
-  texture = TextureManager::loadTexture(texturesheet, renderer);
 }
 
 void GameItem::draw()
 {
-  SDL_Rect renderRect = {destRect.x - Camera::getX(), destRect.y - Camera::getY(), destRect.w, destRect.h};
+  SDL_Rect renderRect = {destRect.x - Game::camera.getX(), destRect.y - Game::camera.getY(), destRect.w, destRect.h};
   renderer->copy(texture, &srcRect, &renderRect);
 }

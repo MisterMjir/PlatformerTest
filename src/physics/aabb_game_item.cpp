@@ -1,20 +1,33 @@
 #include "aabb_game_item.h"
 
-AABBGameItem::AABBGameItem(const char* texturesheet, Renderer* ren, std::vector<AABB*> boxes) : GameItem(texturesheet, ren)
+AABBGameItem::AABBGameItem(Renderer* ren, std::vector<AABB*> &boxes) : GameItem(ren)
 {
-  for (auto box : boxes)
-    this->boxes.push_back(box);
+  boxes.swap(this->boxes);
 }
 
 AABBGameItem::~AABBGameItem()
 {
   for (auto box : boxes)
     delete box;
-  boxes.clear();
+  std::vector<AABB*>().swap(boxes);
 }
 
-void AABBGameItem::addBox(int x, int y, int w, int h, bool collision, bool hit, bool hurt)
+void AABBGameItem::changeX(int change)
 {
-  AABB* box = new AABB(x, y, w, h, collision, hit, hurt);
+  for (auto box : boxes)
+    if (box->isLinked())
+      box->changeX(change);
+}
+
+void AABBGameItem::changeY(int change)
+{
+  for (auto box : boxes)
+    if (box->isLinked())
+      box->changeY(change);
+}
+
+void AABBGameItem::addBox(int x, int y, int w, int h, AABB_Type type, bool linked)
+{
+  AABB* box = new AABB(x, y, w, h, type, linked);
   boxes.push_back(box);
 }

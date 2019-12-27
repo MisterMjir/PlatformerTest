@@ -2,8 +2,13 @@
 #define CONSTANTS
 
 #define WINDOW_WIDTH 480
-#define WINDOW_HEIGHT 380
-#define TILE_SIZE 32
+#define WINDOW_HEIGHT 384
+
+#define X_TILES 15
+#define Y_TILES 12
+
+#define TILE_WIDTH (WINDOW_WIDTH / X_TILES)
+#define TILE_HEIGHT (WINDOW_HEIGHT / Y_TILES)
 
 
 #endif

@@ -1,40 +1,31 @@
 #include "tile.h"
-#include "game.h"
-#include "player_manager.h"
-#include "aabb_game_item.h"
+#include "constants.h"
 #include <iostream>
 
-Tile::Tile(const char* texture, Renderer* ren, SDL_Rect srcRect, SDL_Rect destRect, std::vector<AABB*> boxes, std::vector<ItemManager*> objLists) : AABBGameItem(texture, ren, boxes)
+Tile::Tile(Renderer* ren, std::vector<AABB*> &boxes, int id, bool dynamic) : AABBGameItem(ren, boxes)
 {
-  this->srcRect = srcRect;
-  this->destRect = destRect;
-  aabbObjects = objLists;
-}
-
-Tile::~Tile()
-{
-
+  this->id = id;
+  this->dynamic = dynamic;
+  switch (id)
+  {
+    case 0:
+      srcRect = {0, 0, 0, 0};
+      break;
+    case 1:
+      srcRect = {16, 16, 16, 16};
+      break;
+    case 2:
+      srcRect = {16, 0, 16, 16};
+  }
+  destRect = {this->boxes.at(0)->getX(), this->boxes.at(0)->getY(), this->boxes.at(0)->getW(), this->boxes.at(0)->getH()};
 }
 
 void Tile::update()
 {
-  for (auto list : aabbObjects)
-  {
-    for (int i = 0; i < list->objectsSize(); i++)
-    {
-      AABBGameItem* boxObj = (AABBGameItem*) list->getObject(i);
-      if (boxes.at(0)->yCollision(boxObj->boxes.at(0)))
-      {
-        int change = boxes.at(0)->yDiff(boxObj->boxes.at(0));
-        boxObj->boxes.at(0)->changeY(change);
-        boxObj->boxes.at(1)->changeY(change);
-      }
-      if (boxes.at(0)->xCollision(boxObj->boxes.at(1)))
-      {
-        int change = boxes.at(0)->xDiff(boxObj->boxes.at(1));
-        boxObj->boxes.at(0)->changeX(change);
-        boxObj->boxes.at(1)->changeX(change);
-      }
-    }
-  }
+  std::cout << "I am tile at " << destRect.x / TILE_WIDTH << ", " << destRect.y / TILE_HEIGHT << "\n";
+}
+
+void Tile::setNeighbors(std::vector<Tile*> &neighbors)
+{
+  neighbors.swap(this->neighbors);
 }

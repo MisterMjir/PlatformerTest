@@ -8,9 +8,11 @@
 class AABBGameItem : public GameItem
 {
 public:
-  AABBGameItem(const char* texturesheet, Renderer*, std::vector<AABB*>);
+  AABBGameItem(Renderer*, std::vector<AABB*> &);
   ~AABBGameItem();
-  void addBox(int x, int y, int w, int h, bool collision, bool hit, bool hurt);
+  void changeX(int);
+  void changeY(int);
+  void addBox(int x, int y, int w, int h, AABB_Type, bool linked);
   std::vector<AABB*> boxes;
 };
 

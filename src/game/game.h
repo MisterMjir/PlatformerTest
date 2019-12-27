@@ -7,6 +7,7 @@
 #include "manager_manager.h"
 #include "game_states.h"
 #include "game_input.h"
+#include "camera.h"
 
 class Game
 {
@@ -20,7 +21,10 @@ public:
 
   static bool isRunning();
 
+  static SDL_Texture* getTexture() {return texture;}
+
   static GameInput inputs;
+  static Camera camera;
 private:
   Game();
 
@@ -28,6 +32,7 @@ private:
   static Window* window;
   static Renderer* renderer;
   static ManagerManager* manager;
+  static SDL_Texture* texture;
 };
 
 #endif

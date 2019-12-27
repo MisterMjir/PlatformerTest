@@ -8,7 +8,7 @@
 class UIComponent : public GameItem
 {
 public:
-  UIComponent(const char* texturesheet, Renderer*);
+  UIComponent(Renderer*);
 
   virtual void update() = 0;
 };

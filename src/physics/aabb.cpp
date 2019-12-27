@@ -1,18 +1,17 @@
 #include "aabb.h"
 
-AABB::AABB(int x, int y, int w, int h, bool collision, bool hit, bool hurt)
+AABB::AABB(int x, int y, int w, int h, AABB_Type type, bool linked)
 {
   this->x = x;
   this->y = y;
   this->w = w;
   this->h = h;
-  this->collision = collision;
-  this->hit = hit;
-  this->hurt = hurt;
+  this->type = type;
+  this->linked = linked;
 }
 
 
-int AABB::xCollision(AABB* box)
+int AABB::xOverlap(AABB* box)
 {
   return ((box->getX() > this->x && box->getX() < this->x + this->w) ||
           (box->getX() + box->getW() > this->x && box->getX() + box->getW() < this->x + this->w)) &&
@@ -28,7 +27,7 @@ int AABB::xDiff(AABB* box)
       return this->x - (box->getX() + box->getW());
 }
 
-int AABB::yCollision(AABB* box)
+int AABB::yOverlap(AABB* box)
 {
   return ((box->getX() > this->x && box->getX() < this->x + this->w) ||
           (box->getX() + box->getW() >= this->x && box->getX() + box->getW() <= this->x + this->w)) &&

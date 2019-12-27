@@ -1,20 +1,23 @@
 #ifndef TILE
 #define TILE
 
-#include <SDL2/SDL.h>
 #include "aabb_game_item.h"
-#include "renderer.h"
 #include <vector>
-#include "item_manager.h"
 
 class Tile : public AABBGameItem
 {
 public:
-  Tile(const char* texture, Renderer*, SDL_Rect srcRect, SDL_Rect destRect, std::vector<AABB*>, std::vector<ItemManager*>);
-  ~Tile();
+  Tile(Renderer*, std::vector<AABB*> &, int id, bool dynamic);
+  bool isDynamic() {return dynamic;}
   void update();
+  void setNeighbors(std::vector<Tile*> &);
+  int getX() {return destRect.x;}
+  int getY() {return destRect.y;}
+  std::vector<Tile*> getNeighbors() {return neighbors;}
 private:
-  std::vector<ItemManager*> aabbObjects;
+  int id;
+  bool dynamic;
+  std::vector<Tile*> neighbors; // n, w, e, s
 };
 
 #endif

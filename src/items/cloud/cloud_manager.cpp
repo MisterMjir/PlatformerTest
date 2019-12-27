@@ -11,7 +11,7 @@ void CloudManager::update()
   ticks++;
   if (ticks % 25 == 0)
   {
-    Cloud* cloud = new Cloud("", renderer);
+    Cloud* cloud = new Cloud(renderer);
     objects.push_back(cloud);
   }
   for (int i = objects.size() - 1; i >= 0; i--)
