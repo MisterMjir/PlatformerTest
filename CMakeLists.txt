@@ -17,6 +17,8 @@ add_executable(platformer
 
   src/items/cloud/cloud_manager.cpp
   src/items/cloud/cloud.cpp
+  src/items/player/player_manager.cpp
+  src/items/player/player.cpp
   src/items/tile/tile_manager.cpp
   src/items/tile/tile.cpp
 
@@ -37,6 +39,7 @@ target_include_directories(platformer PUBLIC
   src/game
   src/game/manager
   src/items/cloud
+  src/items/player
   src/items/tile
   src/physics
   src/ui

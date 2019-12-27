@@ -52,17 +52,15 @@ void Game::input()
       {
         case SDLK_LEFT:
           inputs.left = true;
-          camera.move(-16, 0);
           break;
         case SDLK_RIGHT:
           inputs.right = true;
-          camera.move(16, 0);
           break;
         case SDLK_UP:
-          camera.move(0, -16);
+          inputs.up = true;
           break;
         case SDLK_DOWN:
-          camera.move(0, 16);
+          inputs.down = true;
           break;
       }
       break;
@@ -76,10 +74,10 @@ void Game::input()
           inputs.right = false;
           break;
         case SDLK_UP:
-          // Camera::changeY(-1);
+          inputs.up = false;
           break;
         case SDLK_DOWN:
-          // Camera::changeY(1);
+          inputs.down = false;
           break;
       }
       break;

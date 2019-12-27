@@ -11,7 +11,7 @@
 class TileManager : public ItemManager
 {
 public:
-  TileManager(Renderer*);
+  TileManager(Renderer*, std::vector<ItemManager*>);
   ~TileManager();
   void update();
   void draw();
@@ -28,6 +28,7 @@ private:
   void goInS();
   void goInE();
   void goInW();
+  std::vector<ItemManager*> aabbObjects;
 };
 
 #endif

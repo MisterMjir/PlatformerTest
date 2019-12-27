@@ -1,8 +1,8 @@
 #include "tile.h"
 #include "constants.h"
-#include <iostream>
+#include "player.h"
 
-Tile::Tile(Renderer* ren, std::vector<AABB*> &boxes, int id, bool dynamic) : AABBGameItem(ren, boxes)
+Tile::Tile(Renderer* ren, std::vector<AABB*> &boxes, int id, bool dynamic, std::vector<ItemManager*> lists) : AABBGameItem(ren, boxes)
 {
   this->id = id;
   this->dynamic = dynamic;
@@ -18,11 +18,34 @@ Tile::Tile(Renderer* ren, std::vector<AABB*> &boxes, int id, bool dynamic) : AAB
       srcRect = {16, 0, 16, 16};
   }
   destRect = {this->boxes.at(0)->getX(), this->boxes.at(0)->getY(), this->boxes.at(0)->getW(), this->boxes.at(0)->getH()};
+  aabbObjects = lists;
 }
 
 void Tile::update()
 {
-  std::cout << "I am tile at " << destRect.x / TILE_WIDTH << ", " << destRect.y / TILE_HEIGHT << "\n";
+  if (dynamic)
+  {
+    for (auto list : aabbObjects)
+    {
+      for (int i = 0; i < list->objectsSize(); i++)
+      {
+        AABBGameItem* boxObj = (AABBGameItem*) list->getObject(i);
+        if (boxes.at(0)->yOverlap(boxObj->boxes.at(0)))
+        {
+          int change = boxes[0]->yDiff(boxObj->boxes.at(0));
+          boxObj->changeY(change);
+          if (change < 0)
+            dynamic_cast<Player*>(boxObj)->resetYVel(change);
+        }
+        if (boxes.at(0)->xOverlap(boxObj->boxes.at(1)))
+        {
+          int change = boxes.at(0)->xDiff(boxObj->boxes.at(1));
+          boxObj->changeX(change);
+          dynamic_cast<Player*>(boxObj)->resetXVel();
+        }
+      }
+    }
+  }
 }
 
 void Tile::setNeighbors(std::vector<Tile*> &neighbors)

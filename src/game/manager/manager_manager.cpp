@@ -1,6 +1,7 @@
 #include "manager_manager.h"
 #include "cloud_manager.h"
 #include "component_manager.h"
+#include "player_manager.h"
 #include "tile_manager.h"
 
 ManagerManager::ManagerManager(Renderer* renderer)
@@ -9,7 +10,12 @@ ManagerManager::ManagerManager(Renderer* renderer)
   objects.push_back(cloudM);
   ComponentManager* componentM = new ComponentManager(renderer);
   objects.push_back(componentM);
-  TileManager* tileM = new TileManager(renderer);
+  PlayerManager* playerM = new PlayerManager(renderer);
+  objects.push_back(playerM);
+
+  std::vector<ItemManager*> aabbObjs;
+  aabbObjs.push_back(playerM);
+  TileManager* tileM = new TileManager(renderer, aabbObjs);
   objects.push_back(tileM);
 }
 

@@ -1,7 +1,7 @@
 #ifndef AABB_CLASS
 #define AABB_CLASS
 
-enum AABB_Type {COLLISION, HIT, HURT};
+enum AABB_Type {COLLISIONBOX, HITBOX, HURTBOX};
 
 class AABB
 {

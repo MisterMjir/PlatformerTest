@@ -2,12 +2,13 @@
 #define TILE
 
 #include "aabb_game_item.h"
+#include "item_manager.h"
 #include <vector>
 
 class Tile : public AABBGameItem
 {
 public:
-  Tile(Renderer*, std::vector<AABB*> &, int id, bool dynamic);
+  Tile(Renderer*, std::vector<AABB*> &, int id, bool dynamic, std::vector<ItemManager*>);
   bool isDynamic() {return dynamic;}
   void update();
   void setNeighbors(std::vector<Tile*> &);
@@ -18,6 +19,7 @@ private:
   int id;
   bool dynamic;
   std::vector<Tile*> neighbors; // n, w, e, s
+  std::vector<ItemManager*> aabbObjects;
 };
 
 #endif

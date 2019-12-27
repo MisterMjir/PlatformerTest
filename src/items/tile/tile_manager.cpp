@@ -11,9 +11,9 @@
 #include <utility>
 #include <algorithm>
 
-TileManager::TileManager(Renderer* ren) : ItemManager(ren)
+TileManager::TileManager(Renderer* ren, std::vector<ItemManager*> list) : ItemManager(ren)
 {
-
+  aabbObjects = list;
 }
 
 TileManager::~TileManager()
@@ -43,43 +43,9 @@ void TileManager::update()
   }
   manageTiles();
 
-  for (auto tile : n)
-  {
-    std::cout << "North tile: " << tile->getX() / TILE_WIDTH << ", " << tile->getY() / TILE_HEIGHT << "\n";
-    //std::cout << "\tN Neighbor: " << tile->getNeighbors()[0] << "\n";
-    //std::cout << "\tW Neighbor: " << tile->getNeighbors()[1] << "\n";
-    //std::cout << "\tE Neighbor: " << tile->getNeighbors()[2] << "\n";
-    //std::cout << "\tS Neighbor: " << tile->getNeighbors()[3] << "\n";
-  }
-  for (auto tile : w)
-  {
-    std::cout << "West tile: " << tile->getX() / TILE_WIDTH << ", " << tile->getY() / TILE_HEIGHT << "\n";
-    //std::cout << "\tN Neighbor: " << tile->getNeighbors()[0] << "\n";
-    //std::cout << "\tW Neighbor: " << tile->getNeighbors()[1] << "\n";
-    //std::cout << "\tE Neighbor: " << tile->getNeighbors()[2] << "\n";
-    //std::cout << "\tS Neighbor: " << tile->getNeighbors()[3] << "\n";
-  }
-  for (auto tile : e)
-  {
-    std::cout << "East tile: " << tile->getX() / TILE_WIDTH << ", " << tile->getY() / TILE_HEIGHT << "\n";
-    //std::cout << "\tN Neighbor: " << tile->getNeighbors()[0] << "\n";
-    //std::cout << "\tW Neighbor: " << tile->getNeighbors()[1] << "\n";
-    //std::cout << "\tE Neighbor: " << tile->getNeighbors()[2] << "\n";
-    //std::cout << "\tS Neighbor: " << tile->getNeighbors()[3] << "\n";
-  }
-  for (auto tile : s)
-  {
-    std::cout << "South tile: " << tile->getX() / TILE_WIDTH << ", " << tile->getY() / TILE_HEIGHT << "\n";
-    //std::cout << "\tN Neighbor: " << tile->getNeighbors()[0] << "\n";
-    //std::cout << "\tW Neighbor: " << tile->getNeighbors()[1] << "\n";
-    //std::cout << "\tE Neighbor: " << tile->getNeighbors()[2] << "\n";
-    //std::cout << "\tS Neighbor: " << tile->getNeighbors()[3] << "\n\n";
-  }
-
-
   // Update Everything OnScreen
-  //for (auto obj : onScreen)
-   //obj->update();
+  for (auto obj : onScreen)
+   obj->update();
 }
 
 void TileManager::draw()
@@ -129,14 +95,14 @@ void TileManager::loadMap(const std::string &loc)
         std::vector<std::string> data = seperateString(output, ":");
         output = "";
 
-        AABB* box = new AABB(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, COLLISION, true);
+        AABB* box = new AABB(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, COLLISIONBOX, true);
         std::vector<AABB*> boxes(1, box);
 
         bool isDynamic = false;
         if (!data[1].compare("1"))
           isDynamic = true;
 
-        Tile* tile = new Tile(renderer, boxes, std::stoi(data[0]), isDynamic);
+        Tile* tile = new Tile(renderer, boxes, std::stoi(data[0]), isDynamic, aabbObjects);
         objects.push_back(tile);
 
         col++;
@@ -157,13 +123,13 @@ void TileManager::loadMap(const std::string &loc)
           std::vector<std::string> data = seperateString(output, ":");
           output = "";
 
-          AABB* box = new AABB(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, COLLISION, true);
+          AABB* box = new AABB(col * TILE_WIDTH, row * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT, COLLISIONBOX, true);
           std::vector<AABB*> boxes(1, box);
 
           bool isDynamic = false;
           if (!data[1].compare("1"))
             isDynamic = true;
-          Tile* tile = new Tile(renderer, boxes, std::stoi(data[0]), isDynamic);
+          Tile* tile = new Tile(renderer, boxes, std::stoi(data[0]), isDynamic, aabbObjects);
           objects.push_back(tile);
 
           row++;
@@ -257,15 +223,18 @@ void TileManager::manageTiles()
 {
   // Manage what's OnScreen
   CAMERA_DIRECTION direction = Game::camera.getDirection();
-  std::cout << "Direction: " << direction << "\n";
   switch (direction)
   {
     case NORTH_WEST:
+      goInN();
+      goInW();
       break;
     case NORTH:
       goInN();
       break;
     case NORTH_EAST:
+      goInN();
+      goInE();
       break;
     case WEST:
       goInW();
@@ -274,11 +243,15 @@ void TileManager::manageTiles()
       goInE();
       break;
     case SOUTH_WEST:
+      goInS();
+      goInW();
       break;
     case SOUTH:
       goInS();
       break;
     case SOUTH_EAST:
+      goInS();
+      goInE();
       break;
     case NONE:
       break;

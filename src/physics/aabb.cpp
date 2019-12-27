@@ -15,21 +15,21 @@ int AABB::xOverlap(AABB* box)
 {
   return ((box->getX() > this->x && box->getX() < this->x + this->w) ||
           (box->getX() + box->getW() > this->x && box->getX() + box->getW() < this->x + this->w)) &&
-          ((box->getY() > this->y && box->getY() < this->y + this->h) ||
-          (box->getY() + box->getH() > this->y && box->getY() + box->getH() < this->y + this->h));
+          ((box->getY() >= this->y && box->getY() <= this->y + this->h) ||
+          (box->getY() + box->getH() >= this->y && box->getY() + box->getH() <= this->y + this->h));
 }
 
 int AABB::xDiff(AABB* box)
 {
-    if (box->getX() > this->x && box->getX() < this->x + this->w)
-      return box->getX() - (this->x + this->w);
+    if (box->getX() >= this->x && box->getX() <= this->x + this->w)
+      return (this->x + this->w) - box->getX();
     else
-      return this->x - (box->getX() + box->getW());
+      return this->x -(box->getX() + box->getW());
 }
 
 int AABB::yOverlap(AABB* box)
 {
-  return ((box->getX() > this->x && box->getX() < this->x + this->w) ||
+  return ((box->getX() >= this->x && box->getX() <= this->x + this->w) ||
           (box->getX() + box->getW() >= this->x && box->getX() + box->getW() <= this->x + this->w)) &&
           ((box->getY() > this->y && box->getY() < this->y + this->h) ||
           (box->getY() + box->getH() > this->y && box->getY() + box->getH() < this->y + this->h));
