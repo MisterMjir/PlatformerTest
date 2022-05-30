@@ -43,9 +43,17 @@ void TileManager::update()
   }
   manageTiles();
 
-  // Update Everything OnScreen
+  // Update Everything OnScreen and edges
   for (auto obj : onScreen)
-   obj->update();
+    obj->update();
+  for (auto obj : n)
+    obj->update();
+  for (auto obj : s)
+    obj->update();
+  for (auto obj : w)
+    obj->update();
+  for (auto obj : e)
+    obj->update();
 }
 
 void TileManager::draw()

@@ -3,16 +3,14 @@
 #include "constants.h"
 #include <cmath>
 
-int Player::maxXVel = TILE_WIDTH / 2;
-int Player::maxYVel = TILE_HEIGHT / 2;
+int Player::maxXVel = TILE_WIDTH / 4;
+int Player::maxYVel = TILE_HEIGHT / 4;
 
 
-Player::Player(Renderer* ren, std::vector<AABB*> &boxes) : AABBGameItem(ren, boxes)
+Player::Player(Renderer* ren, std::vector<AABB*> &boxes) : TileGameItem(ren, boxes)
 {
   srcRect = {64, 0, 16, 16};
   destRect = {this->boxes.at(1)->getX(), this->boxes.at(0)->getY(), this->boxes.at(1)->getW(), this->boxes.at(0)->getH()};
-  xVel = 0;
-  yVel = 0;
   jumping = false;
   jumpAllowed = true;
 }
@@ -78,9 +76,16 @@ void Player::update()
 
 void Player::draw()
 {
+  renderer->setDrawColor(255, 0, 0, 128);
+  SDL_Rect dRect = {boxes[1]->getX() - Game::camera.getX(), boxes[1]->getY() - Game::camera.getY(), boxes[1]->getW(), boxes[1]->getH()};
+  renderer->fillRect(&dRect);
+  renderer->setDrawColor(0, 0, 255, 128);
+  dRect = {boxes[0]->getX() - Game::camera.getX(), boxes[0]->getY() - Game::camera.getY(), boxes[0]->getW(), boxes[0]->getH()};
+  renderer->fillRect(&dRect);
+
   destRect.x = boxes[1]->getX();
   destRect.y = boxes[0]->getY();
-  GameItem::draw();
+  // GameItem::draw();
 }
 
 void Player::changeX(int change)

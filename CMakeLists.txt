@@ -22,6 +22,7 @@ add_executable(platformer
   src/items/tile/tile_manager.cpp
   src/items/tile/tile.cpp
 
+  src/physics/tile_game_item/tile_game_item.cpp
   src/physics/aabb_game_item.cpp
   src/physics/aabb.cpp
   src/physics/camera.cpp
@@ -41,6 +42,7 @@ target_include_directories(platformer PUBLIC
   src/items/cloud
   src/items/player
   src/items/tile
+  src/physics/tile_game_item
   src/physics
   src/ui
   src/ui/components

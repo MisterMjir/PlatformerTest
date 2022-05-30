@@ -29,19 +29,18 @@ void Tile::update()
     {
       for (int i = 0; i < list->objectsSize(); i++)
       {
-        AABBGameItem* boxObj = (AABBGameItem*) list->getObject(i);
-        if (boxes.at(0)->yOverlap(boxObj->boxes.at(0)))
-        {
-          int change = boxes[0]->yDiff(boxObj->boxes.at(0));
-          boxObj->changeY(change);
-          if (change < 0)
-            dynamic_cast<Player*>(boxObj)->resetYVel(change);
-        }
+        TileGameItem* boxObj = (TileGameItem*) list->getObject(i);
         if (boxes.at(0)->xOverlap(boxObj->boxes.at(1)))
         {
           int change = boxes.at(0)->xDiff(boxObj->boxes.at(1));
           boxObj->changeX(change);
-          dynamic_cast<Player*>(boxObj)->resetXVel();
+          boxObj->resetXVel(change);
+        }
+        if (boxes.at(0)->yOverlap(boxObj->boxes.at(0)))
+        {
+          int change = boxes[0]->yDiff(boxObj->boxes.at(0));
+          boxObj->changeY(change);
+          boxObj->resetYVel(change);
         }
       }
     }

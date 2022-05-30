@@ -1,8 +1,8 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-#define WINDOW_WIDTH 480
-#define WINDOW_HEIGHT 384
+#define WINDOW_WIDTH (480 * 2)
+#define WINDOW_HEIGHT (384 * 2)
 
 #define X_TILES 15
 #define Y_TILES 12
